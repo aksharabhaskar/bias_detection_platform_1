@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 217.2 32.6% 17.5%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    @apply bg-black;
+  }
+  body {
+    @apply bg-black text-slate-100;
+  }
+}
+
+/* Enterprise-grade polish */
+@layer components {
+  /* Circular dot mesh pattern */
+  .dot-mesh-pattern {
+    background-image: radial-gradient(circle at 1px 1px, rgba(249, 115, 22, 0.12) 1px, transparent 0);
+    background-size: 40px 40px;
+    background-position: center;
+  }
+
+  /* Ambient glow - refined */
+  .ambient-glow-orange {
+    box-shadow: 0 0 60px -15px rgba(249, 115, 22, 0.25),
+                0 8px 16px -8px rgba(0, 0, 0, 0.3);
+  }
+
+  .ambient-glow-amber {
+    box-shadow: 0 0 60px -15px rgba(251, 191, 36, 0.2),
+                0 8px 16px -8px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Gradient overlays - subtle */
+  .gradient-overlay-orange {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, transparent 60%);
+  }
+
+  .gradient-overlay-amber {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.08) 0%, transparent 60%);
+  }
+
+  /* Card hover effect - smooth and refined */
+  .card-hover-accent {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-hover-accent:hover {
+    transform: translateY(-2px);
+    border-color: rgba(249, 115, 22, 0.6);
+    box-shadow: 0 12px 24px -8px rgba(249, 115, 22, 0.3),
+                0 0 40px -10px rgba(249, 115, 22, 0.2);
+  }
+
+  /* Smooth transitions */
+  .transition-smooth {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

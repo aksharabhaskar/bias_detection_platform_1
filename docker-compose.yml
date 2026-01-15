@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bias-detection-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/uploads:/app/uploads
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PDF_SERVICE_URL=http://pdf_service:5001
+    networks:
+      - bias-detection-network
+    restart: unless-stopped
+
+  pdf_service:
+    build:
+      context: ./pdf_service
+      dockerfile: Dockerfile
+    container_name: bias-detection-pdf-service
+    ports:
+      - "5001:5001"
+    environment:
+      - PYTHONUNBUFFERED=1
+    networks:
+      - bias-detection-network
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bias-detection-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+      - pdf_service
+    networks:
+      - bias-detection-network
+    restart: unless-stopped
+
+networks:
+  bias-detection-network:
+    driver: bridge
+
+volumes:
+  uploads:
