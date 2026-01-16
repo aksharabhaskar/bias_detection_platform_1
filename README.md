@@ -401,6 +401,12 @@ Contributions are welcome! Please follow these steps:
 3. Make your changes
 4. Submit a pull request
 
+### Project Contributors
+
+- Adhya Hebbar
+- Akshara Bhaskar
+- Aastha Singh
+
 ## Support
 
 For issues, questions, or suggestions:
