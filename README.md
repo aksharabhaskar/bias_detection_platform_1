@@ -23,8 +23,8 @@ This project is still maturing. Expect active iteration, welcome rough edges, an
 
 1. **Clone the repository**
   ```bash
-  git clone https://github.com/aksharabhaskar/Bias-detection-in-recruitment-.git
-  cd Bias-detection-in-recruitment-
+  git clone https://github.com/aksharabhaskar/bias_detection_platform_1.git
+  cd bias_detection_platform_1
   ```
 2. **Start all services**
   ```bash
@@ -47,8 +47,8 @@ If you prefer to run everything without Docker, use the steps below to set up yo
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/aksharabhaskar/Bias-detection-in-recruitment-.git
-cd Bias-detection-in-recruitment-
+git clone https://github.com/aksharabhaskar/bias_detection_platform_1.git
+cd bias_detection_platform_1
 ```
 
 ### 2. Backend Setup (FastAPI)

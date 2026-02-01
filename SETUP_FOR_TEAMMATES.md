@@ -9,8 +9,8 @@
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
-cd Bias-detection-in-recruitment-
+git clone https://github.com/aksharabhaskar/bias_detection_platform_1.git
+cd bias_detection_platform_1
 ```
 
 ### 2. Verify Files
