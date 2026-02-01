@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// PDF service base URL - prefer full URL from env, otherwise default to local PDF service
+const PDF_BASE_URL = (import.meta.env.VITE_PDF_SERVICE_URL && String(import.meta.env.VITE_PDF_SERVICE_URL).startsWith('http'))
+  ? String(import.meta.env.VITE_PDF_SERVICE_URL)
+  : 'http://localhost:5001';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    'Content-Type': 'application/json',
-  },
 });
 
 // Types
@@ -86,18 +87,15 @@ export const api = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await apiClient.post('/api/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    // Let axios/browser set the Content-Type (including boundary) for FormData
+    const response = await apiClient.post('/upload', formData);
 
     return response.data;
   },
 
   // Get dataset details
   getDataset: async (datasetId: string): Promise<any> => {
-    const response = await apiClient.get(`/api/dataset/${datasetId}`);
+    const response = await apiClient.get(`/dataset/${datasetId}`);
     return response.data;
   },
 
@@ -106,7 +104,7 @@ export const api = {
     datasetId: string,
     protectedAttr: string
   ): Promise<AnalysisResponse> => {
-    const response = await apiClient.post('/api/analyze', {
+    const response = await apiClient.post('/analyze', {
       dataset_id: datasetId,
       protected_attr: protectedAttr,
     });
@@ -120,7 +118,7 @@ export const api = {
     dataset2Id: string,
     protectedAttr: string
   ): Promise<ComparisonResponse> => {
-    const response = await apiClient.post('/api/compare', {
+    const response = await apiClient.post('/compare', {
       dataset_id_1: dataset1Id,
       dataset_id_2: dataset2Id,
       protected_attr: protectedAttr,
@@ -131,22 +129,18 @@ export const api = {
 
   // Get metric definitions
   getMetrics: async (): Promise<any> => {
-    const response = await apiClient.get('/api/metrics');
+    const response = await apiClient.get('/metrics');
     return response.data;
   },
 
   // Generate PDF report
   generatePDF: async (data: PDFRequest): Promise<Blob> => {
-    const response = await axios.post(
-      `${API_BASE_URL}/api/pdf/generate`,
-      data,
-      {
-        responseType: 'blob',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    const response = await axios.post(`${PDF_BASE_URL}/generate-pdf`, data, {
+      responseType: 'blob',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
     return response.data;
   },

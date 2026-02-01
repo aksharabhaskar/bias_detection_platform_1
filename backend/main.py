@@ -200,12 +200,31 @@ async def analyze_dataset(request: AnalysisRequest):
             datasets[request.dataset_id] = {'df': df, 'metadata': metadata}
         
         df = datasets[request.dataset_id]['df']
-        
-        # Validate protected attribute
-        validate_protected_attribute(df, request.protected_attr)
-        
+
+        # Validate dataset has required columns and protected attribute
+        try:
+            if 'shortlisted' not in df.columns:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Dataset is missing required column 'shortlisted'"
+                )
+
+            # validate_protected_attribute raises ValueError on invalid attr
+            validate_protected_attribute(df, request.protected_attr)
+        except ValueError as ve:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=str(ve)
+            )
+
         # Initialize fairness metrics calculator
-        fairness = FairnessMetrics(df, request.protected_attr)
+        try:
+            fairness = FairnessMetrics(df, request.protected_attr)
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Error preparing dataset for fairness calculations: {str(e)}"
+            )
         
         # Define all metric methods
         metric_methods = {
@@ -231,9 +250,19 @@ async def analyze_dataset(request: AnalysisRequest):
         for metric_name in metrics_to_calculate:
             if metric_name not in metric_methods:
                 continue
-            
-            # Calculate metric
-            metric_result = metric_methods[metric_name]()
+
+            # Calculate metric (guard each metric to avoid full analysis failure)
+            try:
+                metric_result = metric_methods[metric_name]()
+            except Exception as e:
+                # Log and continue — create an error placeholder for this metric
+                print(f"Error calculating metric {metric_name}: {e}")
+                metric_result = {
+                    'values': {},
+                    'visualization_type': 'metric',
+                    'fairness_assessment': 'Error',
+                    'error': str(e)
+                }
             
             # Get definition
             definition = get_metric_definition(metric_name)
